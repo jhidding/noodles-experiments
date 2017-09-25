@@ -1,4 +1,4 @@
-from noodles import gather, schedule, run_process, serial
+from noodles import gather, schedule, run_parallel, serial
 import multiprocessing as mp
 from queue import Empty 
 import os
@@ -43,7 +43,8 @@ if __name__ == "__main__":
     print("Now processing using Noodles ")
     start_noodles = time.time()
      
-    result = run_process(gather(*[schedule(sumPrimes_noodles)(x) for x in range_of_values]), n_processes = ncpus, registry = serial.base)
+     # result = run_process(gather(*[schedule(sumPrimes_noodles)(x) for x in range_of_values]), n_processes = ncpus, registry = serial.base)
+    result = run_parallel(gather(*[schedule(sumPrimes_noodles)(x) for x in range_of_values]), n_threads = ncpus)
     print(result)
     end_noodles = time.time()
 
