@@ -26,8 +26,15 @@ if __name__ == "__main__":
     range_of_values = range(int(1e6), int(2e6), int(5e4))
     ncpus = multiprocessing.cpu_count()
 
-    print("First multiprocessing ")
-    start_mp = time.time()
+    print("First, one thread.")
+    start_st = time.time()
+    for i in range_of_values:
+        print(sum_primes(i))
+    end_st = time.time()
+    print()
+
+    print("Next, as many threads as there are logical cores, taken from multiprocessing.cpu_count().")
+    start_mt = time.time()
     my_q = queue.Queue()
     for i in range_of_values:
         my_q.put(i)
@@ -38,17 +45,10 @@ if __name__ == "__main__":
         ps.start()
     for ps in procs:
         ps.join()
-    end_mp = time.time()
-    print()
-    print("Now serial processing ")
-
-    start_sp = time.time()
-    for i in range_of_values:
-        print(sum_primes(i))
-    end_sp = time.time()
+    end_mt = time.time()
 
     print()
-    print("Now processing using Noodles ")
+    print("Now Noodles with as many threads as there are logical cores.")
     start_noodles = time.time()
     result = run_parallel(
         gather(*(schedule(sumPrimes_noodles)(x) for x in range_of_values)),
@@ -56,6 +56,6 @@ if __name__ == "__main__":
     print(result)
     end_noodles = time.time()
 
-    print("multiprocessing takes ", end_mp - start_mp,      " seconds")
-    print("single thread takes ", end_sp - start_sp,  "   seconds")
-    print("Noodles takes ", end_noodles - start_noodles,  "   seconds")
+    print("A single thread takes {0:.2f} seconds".format(end_st - start_st))
+    print("Multithreading takes {0:.2f} seconds".format(end_mt - start_mt))
+    print("Noodles takes {0:.2f} seconds".format( end_noodles - start_noodles))
