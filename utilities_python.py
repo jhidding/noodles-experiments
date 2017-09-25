@@ -1,5 +1,5 @@
-from utilities_cython import sumPrimes 
+from utilities_cython import sum_primes
 
 def sumPrimes_noodles(n):
-   return sumPrimes(n)
+   return sum_primes(n)
 

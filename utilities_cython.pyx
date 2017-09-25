@@ -13,6 +13,7 @@ cdef inline int primeQ(int n) nogil:
       i += 1
    return True
 
+
 cpdef unsigned long sumPrimes(int n) nogil:
    """return sum of all primes less than n """
    cdef unsigned long i = 0
@@ -22,3 +23,8 @@ cpdef unsigned long sumPrimes(int n) nogil:
            i += x
    return i
 
+
+def sum_primes(int n):
+    with nogil:
+        result = sumPrimes(n)
+    return result
