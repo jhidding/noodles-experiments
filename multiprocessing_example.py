@@ -46,15 +46,17 @@ if __name__ == "__main__":
     for ps in procs:
         ps.join()
     end_mt = time.time()
-
     print()
+
     print("Now Noodles with as many threads as there are logical cores.")
     start_noodles = time.time()
     result = run_parallel(
         gather(*(schedule(sumPrimes_noodles)(x) for x in range_of_values)),
         n_threads=ncpus)
-    print(result)
+    for item in result:
+        print(item)
     end_noodles = time.time()
+    print()
 
     print("A single thread takes {0:.2f} seconds".format(end_st - start_st))
     print("Multithreading takes {0:.2f} seconds".format(end_mt - start_mt))
